@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rei da Mesa — Wild Rift 1v1</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --gold:#C89B3C; --gold-light:#F0C96A; --gold-dark:#8B6914;
+      --purple-deep:#0A0514; --purple-mid:#1A0A2E;
+      --purple-bright:#9333EA; --silver:#A8A8B8; --white:#F5F0E8;
+      --green:#10b981; --red:#ef4444;
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{
+      background: var(--purple-deep);
+      color: var(--white);
+      font-family:'Rajdhani',sans-serif;
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+    .container{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:2rem 1.5rem 4rem;}
+
+    /* LEFT RANK PANEL */
+    #rank-toggle{
+      position:fixed;left:0;top:50%;transform:translateY(-50%);
+      width:40px;height:100px;z-index:220;border:none;cursor:pointer;
+      background:rgba(26,10,46,.95);border:1px solid rgba(200,155,60,.3);border-left:none;border-radius:0 10px 10px 0;
+      color:var(--gold);font-size:20px;
+    }
+    #rank-panel{
+      position:fixed;left:-360px;top:0;height:100vh;width:340px;z-index:230;
+      background:linear-gradient(180deg,rgba(18,7,35,.99),rgba(10,5,20,.99));
+      border-right:1px solid rgba(200,155,60,.2);
+      transition:left .3s ease;
+      display:flex;flex-direction:column;
+    }
+    #rank-panel.open{left:0}
+    .rank-head{
+      padding:1rem;border-bottom:1px solid rgba(200,155,60,.2);
+      display:flex;justify-content:space-between;align-items:center;
+    }
+    .rank-head h3{font-family:'Cinzel Decorative',serif;color:var(--gold);font-size:1rem}
+    .rank-close{background:transparent;border:none;color:var(--silver);font-size:1.2rem;cursor:pointer}
+    .rank-list{padding:.8rem;overflow:auto;display:flex;flex-direction:column;gap:.4rem}
+    .rank-item{
+      display:grid;grid-template-columns:36px 1fr auto;gap:.5rem;align-items:center;
+      background:rgba(255,255,255,.04);border:1px solid rgba(200,155,60,.14);border-radius:6px;padding:.45rem .55rem;
+    }
+    .rank-pos{color:var(--gold);font-weight:700;text-align:center}
+    .rank-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .rank-pts{font-weight:700;color:#6ee7b7}
+    .rank-empty{color:rgba(168,168,184,.6);text-align:center;padding:1rem}
+
+    /* Twitch button + modal */
+    #twitch-btn{
+      position:fixed;left:16px;bottom:16px;z-index:240;
+      width:54px;height:54px;border:none;border-radius:50%;cursor:pointer;
+      background:#9146FF;color:#fff;font-size:24px;box-shadow:0 8px 25px rgba(145,70,255,.5);
+    }
+    .overlay{
+      display:none;position:fixed;inset:0;z-index:200;
+      background:rgba(5,2,12,.82);backdrop-filter:blur(6px);
+      align-items:center;justify-content:center;padding:1rem;
+    }
+    .overlay.active{display:flex}
+    .modal{
+      width:min(520px,100%);background:#120724;border:1px solid rgba(200,155,60,.25);border-radius:12px;padding:1rem;
+    }
+    .modal h4{font-family:'Cinzel',serif;color:var(--gold);letter-spacing:.12em;font-size:.9rem;margin-bottom:.8rem}
+    .row{display:flex;gap:.6rem}
+    input{
+      width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(200,155,60,.25);
+      color:var(--white);padding:.7rem .8rem;border-radius:8px;outline:none;
+    }
+    .btn{
+      border:none;border-radius:8px;padding:.7rem .9rem;cursor:pointer;font-weight:700;
+    }
+    .btn-primary{background:linear-gradient(135deg,var(--gold-dark),var(--gold));color:#0a0514}
+    .btn-ghost{background:transparent;border:1px solid rgba(200,155,60,.3);color:var(--gold)}
+    .status{margin-top:.7rem;font-size:.9rem;color:var(--silver)}
+
+    /* Main game (resumo) */
+    header{text-align:center;padding:1.2rem 0 2rem}
+    h1{
+      font-family:'Cinzel Decorative',serif;
+      font-size:clamp(2rem,6vw,3.2rem);
+      background:linear-gradient(135deg,var(--gold-dark),var(--gold-light),var(--gold));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    }
+    .card{
+      background:linear-gradient(135deg,rgba(26,10,46,.95),rgba(15,5,30,.98));
+      border:1px solid rgba(200,155,60,.25);border-radius:12px;padding:1rem;
+      margin-bottom:1rem;
+    }
+    .players{display:grid;grid-template-columns:1fr auto 1fr;gap:.6rem;align-items:center}
+    .vs{text-align:center;color:var(--purple-bright);font-weight:700}
+    .actions{display:flex;gap:.6rem;margin-top:.8rem}
+    .btn-win{flex:1;padding:.8rem;border-radius:8px;border:1px solid;cursor:pointer;font-weight:700}
+    .btn-win-1{background:rgba(16,185,129,.12);border-color:rgba(16,185,129,.6);color:#6ee7b7}
+    .btn-win-2{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.6);color:#fca5a5}
+    .small{font-size:.85rem;color:var(--silver);margin-top:.5rem}
+  </style>
+</head>
+<body>
+  <!-- TOP100 -->
+  <button id="rank-toggle" title="Abrir ranking">🏆</button>
+  <aside id="rank-panel">
+    <div class="rank-head">
+      <h3>TOP 100</h3>
+      <button class="rank-close" id="rank-close">✕</button>
+    </div>
+    <div class="rank-list" id="rank-list">
+      <div class="rank-empty">Sem participantes ainda…</div>
+    </div>
+  </aside>
+
+  <!-- Twitch -->
+  <button id="twitch-btn" title="Configurar Twitch">📺</button>
+  <div class="overlay" id="twitch-overlay">
+    <div class="modal">
+      <h4>Integração Twitch</h4>
+      <div class="row">
+        <input id="twitch-link" placeholder="https://www.twitch.tv/tealzlol" />
+        <button class="btn btn-primary" id="save-twitch">Salvar</button>
+      </div>
+      <div class="status" id="twitch-status">Cole o link do canal e salve.</div>
+      <div class="row" style="margin-top:.7rem">
+        <button class="btn btn-ghost" id="close-twitch">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <header>
+      <h1>Rei da Mesa</h1>
+      <p>Wild Rift · 1v1</p>
+    </header>
+
+    <div class="card">
+      <div class="players">
+        <input id="p1" placeholder="Jogador 1" />
+        <div class="vs">VS</div>
+        <input id="p2" placeholder="Jogador 2" />
+      </div>
+      <div class="actions">
+        <button class="btn-win btn-win-1" id="win1">Vitória P1</button>
+        <button class="btn-win btn-win-2" id="win2">Vitória P2</button>
+      </div>
+      <div class="small">
+        Chat commands: <b>!entrar</b>, <b>!aposta 1</b>, <b>!aposta 2</b>
+      </div>
+      <div class="small" id="round-info">Rodada atual: sem apostas fechadas</div>
+    </div>
+  </div>
+
+  <script>
+    // ===== CONFIG =====
+    // Troque para sua URL do backend depois do deploy no Render
+    const API_BASE = "https://SEU-BACKEND.onrender.com";
+
+    // ===== UI rank =====
+    const rankPanel = document.getElementById('rank-panel');
+    document.getElementById('rank-toggle').onclick = () => rankPanel.classList.add('open');
+    document.getElementById('rank-close').onclick = () => rankPanel.classList.remove('open');
+
+    function renderRank(rows){
+      const el = document.getElementById('rank-list');
+      if(!rows || !rows.length){
+        el.innerHTML = `<div class="rank-empty">Sem participantes ainda…</div>`;
+        return;
+      }
+      el.innerHTML = rows.slice(0,100).map((r, i) => `
+        <div class="rank-item">
+          <div class="rank-pos">#${i+1}</div>
+          <div class="rank-name">${escapeHtml(r.user)}</div>
+          <div class="rank-pts">${r.points} pts</div>
+        </div>
+      `).join('');
+    }
+
+    async function loadRank(){
+      try{
+        const res = await fetch(`${API_BASE}/api/ranking`);
+        const data = await res.json();
+        renderRank(data.top || []);
+      }catch(e){
+        console.error(e);
+      }
+    }
+
+    // ===== Twitch modal =====
+    const twitchOverlay = document.getElementById('twitch-overlay');
+    document.getElementById('twitch-btn').onclick = () => twitchOverlay.classList.add('active');
+    document.getElementById('close-twitch').onclick = () => twitchOverlay.classList.remove('active');
+
+    document.getElementById('save-twitch').onclick = async () => {
+      const link = document.getElementById('twitch-link').value.trim();
+      const status = document.getElementById('twitch-status');
+      if(!link){
+        status.textContent = "Informe o link da Twitch.";
+        return;
+      }
+      status.textContent = "Conectando...";
+      try{
+        const res = await fetch(`${API_BASE}/api/connect-channel`, {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ twitchUrl: link })
+        });
+        const data = await res.json();
+        if(!res.ok) throw new Error(data.error || 'Falha ao conectar');
+        status.textContent = `Conectado ao canal: ${data.channel}`;
+      }catch(err){
+        status.textContent = `Erro: ${err.message}`;
+      }
+    };
+
+    // ===== Luta / fechar rodada =====
+    async function closeRound(winnerSide){
+      const p1 = document.getElementById('p1').value.trim() || 'Jogador 1';
+      const p2 = document.getElementById('p2').value.trim() || 'Jogador 2';
+      const info = document.getElementById('round-info');
+
+      try{
+        const res = await fetch(`${API_BASE}/api/resolve-round`, {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ winnerSide, player1: p1, player2: p2 })
+        });
+        const data = await res.json();
+        if(!res.ok) throw new Error(data.error || 'Erro ao fechar rodada');
+
+        info.textContent = `Rodada fechada: venceu ${winnerSide===1 ? p1 : p2} | +10 para apostadores corretos (${data.winnersCount})`;
+        await loadRank();
+      }catch(e){
+        info.textContent = `Erro: ${e.message}`;
+      }
+    }
+
+    document.getElementById('win1').onclick = () => closeRound(1);
+    document.getElementById('win2').onclick = () => closeRound(2);
+
+    // ===== Atualização automática =====
+    setInterval(loadRank, 5000);
+    loadRank();
+
+    function escapeHtml(str=''){
+      return str
+        .replaceAll('&','&amp;')
+        .replaceAll('<','&lt;')
+        .replaceAll('>','&gt;')
+        .replaceAll('"','&quot;')
+        .replaceAll("'","&#039;");
+    }
+  </script>
+</body>
+</html>
