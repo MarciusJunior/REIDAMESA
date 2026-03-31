@@ -159,8 +159,16 @@ input::placeholder { color:rgba(168,168,184,0.4); }
 .player-tag { font-family:'Cinzel',serif; font-size:0.6rem; letter-spacing:0.15em; color:var(--silver); margin-bottom:0.2rem; }
 .player-name-display {
   font-family:'Cinzel',serif; font-size:0.95rem; font-weight:600; letter-spacing:0.1em;
-  color:var(--gold-light); margin-bottom:0.4rem;
+  color:var(--gold-light); margin-bottom:0.35rem;
   text-overflow:ellipsis; overflow:hidden; white-space:nowrap; max-width:140px; margin-inline:auto;
+}
+.player-wins {
+  font-family:'Cinzel',serif;
+  font-size:0.6rem;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--silver);
+  margin-bottom:0.45rem;
 }
 .score-number {
   font-family:'Cinzel Decorative',serif; font-size:3rem; font-weight:700; line-height:1;
@@ -326,7 +334,7 @@ input::placeholder { color:rgba(168,168,184,0.4); }
 .confetti-piece { position:absolute; border-radius:1px; animation:confettiFall linear forwards; }
 @keyframes confettiFall { 0%{transform:translateY(-20px) rotate(0deg);opacity:1} 100%{transform:translateY(600px) rotate(720deg);opacity:0} }
 
-/* ═══════════════════════════════════
+/* ═══════════════  ═══════════════════
    PAINEL LATERAL
 ═══════════════════════════════════ */
 #dots-btn {
@@ -444,19 +452,16 @@ footer { text-align:center; padding-top:2rem; font-family:'Cinzel',serif; font-s
 
 <div class="particles" id="particles"></div>
 
-<!-- BOTÃO LATERAL -->
 <button id="dots-btn" onclick="togglePanel()" title="Roleta de Nomes">
   <span></span><span></span><span></span>
 </button>
 
-<!-- PAINEL LATERAL -->
 <div id="side-panel">
   <div class="panel-header">
     <div class="panel-title">Roleta</div>
     <button class="panel-close" onclick="togglePanel()">✕</button>
   </div>
   <div class="panel-body">
-
     <div>
       <div class="panel-section-title">Sortear Nome</div>
       <div class="roulette-window">
@@ -482,11 +487,9 @@ footer { text-align:center; padding-top:2rem; font-family:'Cinzel',serif; font-s
         <div class="empty-history" style="padding:0.75rem 0;">Nenhum nome ainda…</div>
       </div>
     </div>
-
   </div>
 </div>
 
-<!-- OVERLAY VITÓRIA / PRÓXIMA RODADA -->
 <div class="overlay" id="victory-overlay">
   <div class="victory-card" id="victory-card">
     <div class="v-crown">👑</div>
@@ -520,7 +523,6 @@ footer { text-align:center; padding-top:2rem; font-family:'Cinzel',serif; font-s
   </div>
 </div>
 
-<!-- OVERLAY RESGATE -->
 <div class="overlay" id="collect-overlay">
   <div class="collect-card" id="collect-card">
     <div class="c-icon">💰</div>
@@ -533,7 +535,6 @@ footer { text-align:center; padding-top:2rem; font-family:'Cinzel',serif; font-s
   </div>
 </div>
 
-<!-- MAIN -->
 <div class="container">
   <header>
     <span class="crown-icon">👑</span>
@@ -544,7 +545,6 @@ footer { text-align:center; padding-top:2rem; font-family:'Cinzel',serif; font-s
     </div>
   </header>
 
-  <!-- SETUP -->
   <div id="setup-section">
     <div class="card">
       <div class="section-title">Configurar Sessão</div>
@@ -569,7 +569,6 @@ footer { text-align:center; padding-top:2rem; font-family:'Cinzel',serif; font-s
     </div>
   </div>
 
-  <!-- GAME -->
   <div id="game-section">
     <div class="card">
       <div class="top-bar">
@@ -581,12 +580,14 @@ footer { text-align:center; padding-top:2rem; font-family:'Cinzel',serif; font-s
         <div class="score-side" id="side-1">
           <div class="player-tag">👑 REI</div>
           <div class="player-name-display" id="display-p1">—</div>
+          <div class="player-wins" id="wins-p1">Vitórias: 0</div>
           <div class="score-number score-1" id="score-1">0</div>
         </div>
         <div class="score-divider"><div class="score-divider-inner">VS</div></div>
         <div class="score-side" id="side-2">
           <div class="player-tag">⚔ DESAF.</div>
           <div class="player-name-display" id="display-p2">—</div>
+          <div class="player-wins" id="wins-p2">Vitórias: 0</div>
           <div class="score-number score-2" id="score-2">0</div>
         </div>
       </div>
@@ -617,16 +618,13 @@ footer { text-align:center; padding-top:2rem; font-family:'Cinzel',serif; font-s
 </div>
 
 <script>
-// ══════════════════════════════
-//  ESTADO
-// ══════════════════════════════
 let G = {
   king: '', challenger: '',
   kingPts: 0, chalPts: 0,
-  pot: 0, bet: 0, round: 0
+  pot: 0, bet: 0, round: 0,
+  wins: {}
 };
 
-// Partículas
 const pc = document.getElementById('particles');
 for (let i=0;i<25;i++){
   const p=document.createElement('div'); p.className='particle';
@@ -637,21 +635,17 @@ for (let i=0;i<25;i++){
   pc.appendChild(p);
 }
 
-// ══════════════════════════════
-//  SESSÃO
-// ══════════════════════════════
 function startSession() {
   const p1  = val('p1-name') || 'Jogador 1';
   const p2  = val('p2-name') || 'Jogador 2';
   const bet = num('bet-amount');
-  G = { king:p1, challenger:p2, kingPts:0, chalPts:0, pot:bet*2, bet, round:0 };
+  G = { king:p1, challenger:p2, kingPts:0, chalPts:0, pot:bet*2, bet, round:0, wins:{} };
+  G.wins[p1] = 0;
+  G.wins[p2] = 0;
   show('game-section'); hide('setup-section');
   renderGame();
 }
 
-// ══════════════════════════════
-//  RENDER
-// ══════════════════════════════
 function renderGame() {
   setText('display-p1', G.king);
   setText('display-p2', G.challenger);
@@ -661,13 +655,16 @@ function renderGame() {
   setText('btn-p2-label', trunc(G.challenger,10));
   setText('pot-value', G.pot);
   setText('pot-sub', 'pts — aposta desta rodada: '+G.bet+' pts cada');
+
+  const kingWins = G.wins[G.king] || 0;
+  const challengerWins = G.wins[G.challenger] || 0;
+  setText('wins-p1', 'Vitórias: ' + kingWins);
+  setText('wins-p2', 'Vitórias: ' + challengerWins);
+
   el('side-1').classList.toggle('leading', G.kingPts > G.chalPts);
   el('side-2').classList.toggle('leading', G.chalPts > G.kingPts);
 }
 
-// ══════════════════════════════
-//  VITÓRIA DE RODADA
-// ══════════════════════════════
 function registerWin(side) {
   G.round++;
   const winner = side===1 ? G.king : G.challenger;
@@ -676,27 +673,27 @@ function registerWin(side) {
   if(side===1) G.kingPts += G.bet;
   else         G.chalPts += G.bet;
 
+  G.wins[winner] = (G.wins[winner] || 0) + 1;
+  if (G.wins[loser] === undefined) G.wins[loser] = 0;
+
   const sEl = el('score-'+side);
   sEl.textContent = side===1 ? G.kingPts : G.chalPts;
   sEl.classList.remove('pulse'); void sEl.offsetWidth; sEl.classList.add('pulse');
 
   addHist(winner, loser, side, false);
 
-  // O vencedor vira/mantém o rei, zeramos pontos da rodada
   if(side===2) {
     G.king = G.challenger;
     setText('v-sub','desbancou o rei e assume a mesa! 🔥');
   } else {
     setText('v-sub','permanece na mesa');
   }
-  G.kingPts = 0; G.chalPts = 0;
 
+  G.kingPts = 0; G.chalPts = 0;
   openVictoryOverlay(winner);
+  renderGame();
 }
 
-// ══════════════════════════════
-//  OVERLAY VITÓRIA
-// ══════════════════════════════
 function openVictoryOverlay(winnerName) {
   setText('v-label','Vitória da Rodada');
   setText('v-name', winnerName);
@@ -709,7 +706,6 @@ function openVictoryOverlay(winnerName) {
 }
 
 function openResgate() {
-  // Resgatar diretamente do jogo (sem rodada)
   setText('v-label','Resgate');
   setText('v-name',  G.king);
   setText('v-sub',   'quer encerrar e resgatar o pote');
@@ -723,7 +719,8 @@ function continueGame() {
   const challAdd  = num('challenger-bet');
   G.challenger = challName;
   G.bet = challAdd;
-  G.pot += challAdd * 2; // ambos entram com o valor do desafiante nessa rodada
+  G.pot += challAdd * 2;
+  if (G.wins[G.challenger] === undefined) G.wins[G.challenger] = 0;
   el('victory-overlay').classList.remove('active');
   renderGame();
 }
@@ -744,9 +741,6 @@ function newSession() {
   el('history-list').innerHTML='<div class="empty-history" id="empty-msg">Nenhuma rodada ainda…</div>';
 }
 
-// ══════════════════════════════
-//  HISTÓRICO
-// ══════════════════════════════
 function addHist(winner,loser,side,isResgate) {
   const list = el('history-list');
   const empty = document.getElementById('empty-msg');
@@ -762,9 +756,6 @@ function addHist(winner,loser,side,isResgate) {
   list.prepend(item);
 }
 
-// ══════════════════════════════
-//  CONFETTI
-// ══════════════════════════════
 function confetti(cardId) {
   const card=el(cardId);
   card.querySelectorAll('.confetti-piece').forEach(e=>e.remove());
@@ -781,12 +772,8 @@ function confetti(cardId) {
   }
 }
 
-// ══════════════════════════════
-//  PAINEL LATERAL
-// ══════════════════════════════
 function togglePanel(){ el('side-panel').classList.toggle('open'); }
 
-// ── Lista de nomes ──
 let namesList=[];
 
 function addName(){
@@ -808,7 +795,6 @@ function shuffleNames(){
   el('roulette-result').textContent='🔀 embaralhado!';
 }
 
-// ── Roleta ──
 const ITEM_H=35;
 let spinning=false;
 
@@ -827,14 +813,12 @@ function spinRoulette(){
   el('roulette-result').textContent='…';
 
   const n=namesList.length;
-  const rep=5; // repetições no track
+  const rep=5;
   const track=el('roulette-track');
 
-  // destino: seção do meio (repetição 3)
   const targetIdx = n*2 + ~~(Math.random()*n);
   const targetY   = targetIdx*ITEM_H - (70/2-ITEM_H/2);
   const startY    = n*2*ITEM_H - (70/2-ITEM_H/2);
-  // laps extras
   const extraLaps = n * ITEM_H * 3;
   const endY = startY + extraLaps + (targetY - startY);
 
@@ -863,9 +847,6 @@ function spinRoulette(){
   requestAnimationFrame(frame);
 }
 
-// ══════════════════════════════
-//  UTILS
-// ══════════════════════════════
 function el(id){ return document.getElementById(id); }
 function val(id){ return el(id).value.trim(); }
 function num(id){ return parseInt(el(id).value)||0; }
@@ -874,7 +855,6 @@ function show(id){ el(id).style.display='block'; }
 function hide(id){ el(id).style.display='none'; }
 function trunc(s,n){ return s.length>n?s.slice(0,n)+'…':s; }
 
-// Enter no setup
 ['p1-name','p2-name','bet-amount'].forEach(id=>{
   el(id).addEventListener('keydown',e=>{ if(e.key==='Enter') startSession(); });
 });
