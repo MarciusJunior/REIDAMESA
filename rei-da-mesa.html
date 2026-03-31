@@ -719,7 +719,7 @@ function continueGame() {
   const challAdd  = num('challenger-bet');
   G.challenger = challName;
   G.bet = challAdd;
-  G.pot += challAdd * 2;
+  G.pot += challAdd + 30;
   if (G.wins[G.challenger] === undefined) G.wins[G.challenger] = 0;
   el('victory-overlay').classList.remove('active');
   renderGame();
