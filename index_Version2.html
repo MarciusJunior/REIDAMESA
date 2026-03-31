@@ -25,7 +25,6 @@ body {
   overflow-x: hidden;
 }
 
-/* PARTICLES */
 .particles { position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
 .particle {
   position:absolute; width:2px; height:2px; background:var(--gold-light);
@@ -38,10 +37,8 @@ body {
   100% { transform:translateY(-10vh) scale(1.5); opacity:0; }
 }
 
-/* LAYOUT */
 .container { position:relative; z-index:1; max-width:900px; margin:0 auto; padding:2rem 1.5rem 4rem; }
 
-/* HEADER */
 header { text-align:center; padding:2rem 0 3rem; }
 .crown-icon {
   font-size:3rem; display:block; margin-bottom:0.5rem;
@@ -61,7 +58,6 @@ h1 {
 .divider-line { flex:1; height:1px; background:linear-gradient(to right,transparent,var(--gold),transparent); }
 .divider-diamond { width:8px; height:8px; background:var(--gold); transform:rotate(45deg); box-shadow:0 0 10px var(--gold); }
 
-/* CARD */
 .card {
   background:linear-gradient(135deg,rgba(26,10,46,0.95) 0%,rgba(15,5,30,0.98) 100%);
   border:1px solid rgba(200,155,60,0.25); border-radius:12px; padding:2rem;
@@ -79,7 +75,6 @@ h1 {
 }
 .section-title::after { content:''; flex:1; height:1px; background:linear-gradient(to right,rgba(200,155,60,0.4),transparent); }
 
-/* INPUTS */
 input[type=text], input[type=number] {
   background:rgba(255,255,255,0.04); border:1px solid rgba(200,155,60,0.2);
   border-radius:6px; padding:0.75rem 1rem; color:var(--white);
@@ -92,7 +87,6 @@ input[type=text]:focus, input[type=number]:focus {
 }
 input::placeholder { color:rgba(168,168,184,0.4); }
 
-/* SETUP */
 #setup-section { margin-bottom:2rem; }
 .players-grid { display:grid; grid-template-columns:1fr auto 1fr; gap:1rem; align-items:end; margin-bottom:1.5rem; }
 .vs-badge { font-family:'Cinzel Decorative',serif; font-size:1.4rem; font-weight:700; color:var(--purple-bright); text-align:center; text-shadow:0 0 20px var(--purple-glow); padding-bottom:0.5rem; }
@@ -109,7 +103,6 @@ input::placeholder { color:rgba(168,168,184,0.4); }
 .bet-symbol { font-size:1.3rem; color:var(--gold); }
 .bet-row input { flex:1; text-align:center; font-size:1.2rem; }
 
-/* BUTTONS */
 .btn-primary {
   width:100%; padding:1rem;
   background:linear-gradient(135deg,var(--gold-dark) 0%,var(--gold) 50%,var(--gold-dark) 100%);
@@ -141,7 +134,6 @@ input::placeholder { color:rgba(168,168,184,0.4); }
 }
 .btn-sm:hover { background:rgba(16,185,129,0.1); border-color:#10b981; }
 
-/* SCOREBOARD */
 #game-section { display:none; }
 .top-bar { display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; }
 .scoreboard {
@@ -178,7 +170,6 @@ input::placeholder { color:rgba(168,168,184,0.4); }
 .score-1 { color:#4ade80; text-shadow:0 0 20px rgba(74,222,128,0.5); }
 .score-2 { color:#f87171; text-shadow:0 0 20px rgba(248,113,113,0.5); }
 
-/* POT */
 .pot-display {
   text-align:center; padding:1rem 1.5rem;
   background:linear-gradient(135deg,rgba(200,155,60,0.08),rgba(200,155,60,0.04));
@@ -193,10 +184,8 @@ input::placeholder { color:rgba(168,168,184,0.4); }
 }
 .pot-sub { font-family:'Cinzel',serif; font-size:0.65rem; letter-spacing:0.2em; color:var(--silver); margin-top:0.15rem; }
 
-/* ACTION ROW */
 .action-row { display:flex; gap:1rem; margin-bottom:1.25rem; }
 
-/* HISTORY */
 .history-list {
   display:flex; flex-direction:column; gap:0.5rem;
   max-height:200px; overflow-y:auto; padding-right:0.25rem;
@@ -224,7 +213,6 @@ input::placeholder { color:rgba(168,168,184,0.4); }
 .hist-badge.gold { background:rgba(200,155,60,0.2); color:var(--gold-light); border:1px solid rgba(200,155,60,0.3); }
 .empty-history { text-align:center; color:rgba(168,168,184,0.4); font-size:0.85rem; padding:1.5rem; font-style:italic; }
 
-/* OVERLAY BASE */
 .overlay {
   display:none; position:fixed; inset:0; z-index:100;
   background:rgba(5,2,12,0.85); backdrop-filter:blur(6px);
@@ -232,7 +220,6 @@ input::placeholder { color:rgba(168,168,184,0.4); }
 }
 .overlay.active { display:flex; }
 
-/* OVERLAY VITÓRIA */
 .victory-card {
   background:linear-gradient(135deg,rgba(26,10,46,0.98),rgba(10,5,20,0.99));
   border:1px solid rgba(200,155,60,0.5); border-radius:16px;
@@ -296,7 +283,6 @@ input::placeholder { color:rgba(168,168,184,0.4); }
 }
 .btn-collect:hover { box-shadow:0 4px 20px rgba(16,185,129,0.4); transform:translateY(-2px); }
 
-/* OVERLAY RESGATE */
 #collect-overlay { background:rgba(2,10,5,0.92); backdrop-filter:blur(8px); }
 .collect-card {
   background:linear-gradient(135deg,rgba(6,40,20,0.98),rgba(2,15,8,0.99));
@@ -330,13 +316,9 @@ input::placeholder { color:rgba(168,168,184,0.4); }
 }
 .btn-new-session:hover { box-shadow:0 6px 25px rgba(200,155,60,0.4); transform:translateY(-2px); }
 
-/* CONFETTI */
 .confetti-piece { position:absolute; border-radius:1px; animation:confettiFall linear forwards; }
 @keyframes confettiFall { 0%{transform:translateY(-20px) rotate(0deg);opacity:1} 100%{transform:translateY(600px) rotate(720deg);opacity:0} }
 
-/* ═══════════════  ═══════════════════
-   PAINEL LATERAL
-═══════════════════════════════════ */
 #dots-btn {
   position:fixed; right:0; top:50%; transform:translateY(-50%);
   z-index:210; width:36px; height:80px;
@@ -384,7 +366,6 @@ input::placeholder { color:rgba(168,168,184,0.4); }
 }
 .panel-section-title::after { content:''; flex:1; height:1px; background:linear-gradient(to right,rgba(200,155,60,0.3),transparent); }
 
-/* ROLETA */
 .roulette-window {
   position:relative; height:70px; overflow:hidden;
   background:rgba(0,0,0,0.4); border:1px solid rgba(200,155,60,0.2); border-radius:8px;
@@ -423,7 +404,6 @@ input::placeholder { color:rgba(168,168,184,0.4); }
 .btn-panel-solid:hover { box-shadow:0 4px 15px rgba(200,155,60,0.4); transform:translateY(-1px); }
 .btn-panel-solid:disabled { opacity:0.45; cursor:not-allowed; transform:none; box-shadow:none; }
 
-/* LISTA NOMES */
 .name-add-row { display:flex; gap:0.5rem; }
 .name-add-row input { flex:1; }
 .name-add-btn {
@@ -445,7 +425,6 @@ input::placeholder { color:rgba(168,168,184,0.4); }
 .name-del { background:none; border:none; color:rgba(168,168,184,0.4); cursor:pointer; font-size:1rem; line-height:1; transition:color 0.15s; padding:0; }
 .name-del:hover { color:#f87171; }
 
-footer { text-align:center; padding-top:2rem; font-family:'Cinzel',serif; font-size:0.65rem; letter-spacing:0.2em; color:rgba(168,168,184,0.3); text-transform:uppercase; }
 #rank-btn {
   position:fixed; left:0; top:50%; transform:translateY(-50%);
   z-index:260; width:38px; height:90px;
@@ -486,6 +465,17 @@ footer { text-align:center; padding-top:2rem; font-family:'Cinzel',serif; font-s
   background:#9146FF; color:#fff; font-size:22px; cursor:pointer;
   box-shadow:0 8px 25px rgba(145,70,255,.45);
 }
+#twitch-overlay { z-index:250; }
+.twitch-card {
+  background:linear-gradient(135deg,rgba(26,10,46,0.98),rgba(10,5,20,0.99));
+  border:1px solid rgba(200,155,60,0.35); border-radius:14px;
+  padding:1.2rem; max-width:560px; width:100%;
+}
+.twitch-title { font-family:'Cinzel',serif; color:var(--gold); letter-spacing:.15em; margin-bottom:.8rem; }
+.twitch-row { display:flex; gap:.6rem; }
+.twitch-status { margin-top:.7rem; color:var(--silver); font-size:.9rem; }
+
+footer { text-align:center; padding-top:2rem; font-family:'Cinzel',serif; font-size:0.65rem; letter-spacing:0.2em; color:rgba(168,168,184,0.3); text-transform:uppercase; }
 </style>
 </head>
 <body>
@@ -495,6 +485,32 @@ footer { text-align:center; padding-top:2rem; font-family:'Cinzel',serif; font-s
 <button id="dots-btn" onclick="togglePanel()" title="Roleta de Nomes">
   <span></span><span></span><span></span>
 </button>
+
+<button id="rank-btn" onclick="toggleRankPanel()">🏆</button>
+<div id="rank-panel">
+  <div class="rank-head">
+    <div class="rank-title">TOP 100</div>
+    <button class="rank-close" onclick="toggleRankPanel()">✕</button>
+  </div>
+  <div class="rank-list" id="rank-list">
+    <div class="rank-empty">Sem participantes ainda…</div>
+  </div>
+</div>
+
+<button id="twitch-fab" onclick="openTwitchModal()">📺</button>
+<div class="overlay" id="twitch-overlay">
+  <div class="twitch-card">
+    <div class="twitch-title">Integração Twitch</div>
+    <div class="twitch-row">
+      <input type="text" id="twitch-url" placeholder="https://www.twitch.tv/tealzlol">
+      <button class="btn-go" onclick="saveTwitchChannel()">Conectar</button>
+    </div>
+    <div class="twitch-status" id="twitch-status">Cole o link do streamer e clique em Conectar.</div>
+    <div style="margin-top:.8rem;display:flex;justify-content:flex-end;">
+      <button class="btn-sm" onclick="closeTwitchModal()">Fechar</button>
+    </div>
+  </div>
+</div>
 
 <div id="side-panel">
   <div class="panel-header">
@@ -526,46 +542,6 @@ footer { text-align:center; padding-top:2rem; font-family:'Cinzel',serif; font-s
       <div class="names-ul" id="names-ul">
         <div class="empty-history" style="padding:0.75rem 0;">Nenhum nome ainda…</div>
       </div>
-    </div>
-  </div>
-</div>
-
-#twitch-overlay { z-index:250; }
-.twitch-card {
-  background:linear-gradient(135deg,rgba(26,10,46,0.98),rgba(10,5,20,0.99));
-  border:1px solid rgba(200,155,60,0.35); border-radius:14px;
-  padding:1.2rem; max-width:560px; width:100%;
-}
-.twitch-title { font-family:'Cinzel',serif; color:var(--gold); letter-spacing:.15em; margin-bottom:.8rem; }
-.twitch-row { display:flex; gap:.6rem; }
-.twitch-status { margin-top:.7rem; color:var(--silver); font-size:.9rem; }
-</style>
-</head>
-<body>
-
-<!-- NOVO -->
-<button id="rank-btn" onclick="toggleRankPanel()">🏆</button>
-<div id="rank-panel">
-  <div class="rank-head">
-    <div class="rank-title">TOP 100</div>
-    <button class="rank-close" onclick="toggleRankPanel()">✕</button>
-  </div>
-  <div class="rank-list" id="rank-list">
-    <div class="rank-empty">Sem participantes ainda…</div>
-  </div>
-</div>
-
-<button id="twitch-fab" onclick="openTwitchModal()">📺</button>
-<div class="overlay" id="twitch-overlay">
-  <div class="twitch-card">
-    <div class="twitch-title">Integração Twitch</div>
-    <div class="twitch-row">
-      <input type="text" id="twitch-url" placeholder="https://www.twitch.tv/tealzlol">
-      <button class="btn-go" onclick="saveTwitchChannel()">Conectar</button>
-    </div>
-    <div class="twitch-status" id="twitch-status">Cole o link do streamer e clique em Conectar.</div>
-    <div style="margin-top:.8rem;display:flex;justify-content:flex-end;">
-      <button class="btn-sm" onclick="closeTwitchModal()">Fechar</button>
     </div>
   </div>
 </div>
@@ -698,6 +674,8 @@ footer { text-align:center; padding-top:2rem; font-family:'Cinzel',serif; font-s
 </div>
 
 <script>
+const API_BASE = "https://reidamesa.onrender.com";
+
 let G = {
   king: '', challenger: '',
   kingPts: 0, chalPts: 0,
@@ -773,6 +751,31 @@ function registerWin(side) {
   openVictoryOverlay(winner);
   renderGame();
 }
+
+const _registerWinOriginal = registerWin;
+registerWin = async function(side){
+  _registerWinOriginal(side);
+  try{
+    const r = await fetch(`${API_BASE}/api/resolve-round`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        winnerSide: side,
+        player1: G.king,
+        player2: G.challenger
+      })
+    });
+    const j = await r.json();
+    if(r.ok){
+      fetchRanking();
+      console.log(`Apostas resolvidas: +10 para ${j.winnersCount} usuário(s).`);
+    } else {
+      console.error(j.error || 'Falha ao resolver rodada');
+    }
+  }catch(err){
+    console.error('Erro ao resolver rodada de apostas:', err);
+  }
+};
 
 function openVictoryOverlay(winnerName) {
   setText('v-label','Vitória da Rodada');
@@ -927,18 +930,6 @@ function spinRoulette(){
   requestAnimationFrame(frame);
 }
 
-function el(id){ return document.getElementById(id); }
-function val(id){ return el(id).value.trim(); }
-function num(id){ return parseInt(el(id).value)||0; }
-function setText(id,t){ el(id).textContent=t; }
-function show(id){ el(id).style.display='block'; }
-function hide(id){ el(id).style.display='none'; }
-function trunc(s,n){ return s.length>n?s.slice(0,n)+'…':s; }
-
-['p1-name','p2-name','bet-amount'].forEach(id=>{
-  el(id).addEventListener('keydown',e=>{ if(e.key==='Enter') startSession(); });
-});
-
 function toggleRankPanel(){ el('rank-panel').classList.toggle('open'); }
 function openTwitchModal(){ el('twitch-overlay').classList.add('active'); }
 function closeTwitchModal(){ el('twitch-overlay').classList.remove('active'); }
@@ -976,6 +967,7 @@ function renderRanking(top){
     </div>
   `).join('');
 }
+
 async function fetchRanking(){
   try{
     const r = await fetch(`${API_BASE}/api/ranking`);
@@ -986,34 +978,18 @@ async function fetchRanking(){
 setInterval(fetchRanking, 5000);
 fetchRanking();
 
-const _registerWinOriginal = registerWin;
-registerWin = async function(side){
-  _registerWinOriginal(side); // mantém seu fluxo visual atual
+function el(id){ return document.getElementById(id); }
+function val(id){ return el(id).value.trim(); }
+function num(id){ return parseInt(el(id).value)||0; }
+function setText(id,t){ el(id).textContent=t; }
+function show(id){ el(id).style.display='block'; }
+function hide(id){ el(id).style.display='none'; }
+function trunc(s,n){ return s.length>n?s.slice(0,n)+'…':s; }
+function escapeHtml(str=''){ return str.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'","&#039;"); }
 
-  try{
-    const r = await fetch(`${API_BASE}/api/resolve-round`,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        winnerSide: side,
-        player1: G.king,
-        player2: G.challenger
-      })
-    });
-    const j = await r.json();
-    if(r.ok){
-      fetchRanking();
-      // opcional: mensagem discreta
-      console.log(`Apostas resolvidas: +10 para ${j.winnersCount} usuário(s).`);
-    }
-  }catch(err){
-    console.error('Erro ao resolver rodada de apostas:', err);
-  }
-};
-
-function escapeHtml(str=''){
-  return str.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'","&#039;");
-}
+['p1-name','p2-name','bet-amount'].forEach(id=>{
+  el(id).addEventListener('keydown',e=>{ if(e.key==='Enter') startSession(); });
+});
 </script>
 </body>
 </html>
